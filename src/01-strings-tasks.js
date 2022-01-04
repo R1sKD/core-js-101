@@ -209,8 +209,11 @@ function extractEmails(str) {
  *             '└──────────┘\n'
  *
  */
-function getRectangleString(/* width, height */) {
-  throw new Error('Not implemented');
+function getRectangleString(width, height) {
+  const top = `┌${'─'.repeat(width - 2)}┐\n`;
+  const mid = `│${' '.repeat(width - 2)}│\n`.repeat(height - 2);
+  const bottom = `└${'─'.repeat(width - 2)}┘\n`;
+  return `${top}${mid}${bottom}`;
 }
 
 
@@ -230,8 +233,23 @@ function getRectangleString(/* width, height */) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  const first13Letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'];
+  const second13Letters = ['n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+  let res = '';
+  for (let i = 0; i < str.length; i += 1) {
+    let letter = str[i];
+    const isUpperCase = letter.charCodeAt(0) >= 65 && letter.charCodeAt(0) <= 90;
+    if (first13Letters.includes(letter.toLowerCase())) {
+      const index = first13Letters.indexOf(letter.toLowerCase());
+      letter = second13Letters[index];
+    } else if (second13Letters.includes(letter.toLowerCase())) {
+      const index = second13Letters.indexOf(letter.toLowerCase());
+      letter = first13Letters[index];
+    }
+    res += isUpperCase ? letter.toUpperCase() : letter;
+  }
+  return res;
 }
 
 /**
